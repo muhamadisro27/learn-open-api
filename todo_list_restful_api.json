@@ -1,0 +1,204 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Todo List RESTful API",
+    "version": "1.0",
+    "description": "OpenAPI RESTful API for Todo List",
+    "contact": {
+      "name": "Muhamad Isro Sabanur",
+      "email": "mohammadisro2710@gmail.com",
+      "url": "https://github.com/muhamadisro27"
+    },
+    "license": {
+      "name": "APACHE 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{environment}.dummy-restful.com/api/v1",
+      "description": "Todo List RESTful API",
+      "variables": {
+        "environment": {
+          "default": "dev",
+          "description": "Server Environment",
+          "enum": ["dev", "staging", "prod"]
+        }
+      }
+    }
+  ],
+  "externalDocs": {
+    "description": "Todo List RESTful API",
+    "url": "https://restful.com/api/v1.com"
+  },
+  "paths": {
+    "/todolist": {
+      "get": {
+        "summary": "Get All Todo List Data",
+        "description": "Only will return active todo list, complete todolist or deleted todo list will be removed !",
+        "parameters": [
+          {
+            "name": "include one",
+            "description": "Include one todolist in the result",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "nullable": true
+            }
+          },
+          {
+            "name": "name",
+            "description": "Filter todolist by name",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": false,
+              "maxLength": 100,
+              "minLength": 0
+            },
+            "examples" : {
+               "java" : {
+                  "description": "Example java",
+                  "value" : {
+                     "name" : "Belajar Java",
+                     "tags" : [
+                        "Java",
+                        "Pemrograman"
+                     ],
+                     "priority" : 3
+                  }
+               },
+               "go" : {
+                  "description": "Example GO",
+                  "value" : {
+                     "name" : "Belajar Go",
+                     "tags" : [
+                        "GO",
+                        "Pemrograman"
+                     ],
+                     "priority" : 1
+                  }
+               }
+            }
+          }
+        ],
+        "responses": {
+         "200" : {
+            "description": "Ge Todolist success",
+            "content": {
+               "application/json" : {
+                  "schema" : {
+                     "type": "array",
+                     "items" : {
+                        "type": "object",
+                        "properties": {
+                           "id" : {
+                              "type": "string",
+                              "description": "Todo List Id",
+                              "nullable": false
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+        }
+      },
+      "post": {
+        "summary": "Create Todo List",
+        "description": "Create a new Todo  List",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "default": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
+    "/todolist/{todoListId}": {
+      "put": {
+        "summary": "Update Existing todolist",
+        "description": "Update Existing todolist in database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "default": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {},
+        "parameters": [
+          {
+            "name": "todolistId",
+            "in": "path",
+            "required": true,
+            "description": "Todo list id for update",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete existing Todo List",
+        "description": "Delete exsiting todolist in database",
+        "responses": {},
+        "parameters": [
+          {
+            "name": "todolistId",
+            "in": "path",
+            "required": true,
+            "description": "Todo list id for update",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
